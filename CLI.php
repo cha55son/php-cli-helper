@@ -1,12 +1,19 @@
 <?php
     class CLI {
-        public static $outputPrefix = '    ';
+        public $outputPrefix = '    ';
         // Variables to hold the output and status
         // of the last ran command.
-        public static $lastCmdStatus = false;
-        public static $lastCmdOutput = false;
+        public $lastCmdStatus = false;
+        public $lastCmdOutput = false;
 
-        /**
+        private $screen = array();
+
+        public function __construct() {
+            $this->screen['width'] = exec('tput cols');
+            $this->screen['height'] = exec('tput lines');
+        }
+
+        /*
          * Outputs data to the cmdline. The output will be tabbed to 
          * differientiate from the prompt/etc.
          * 
@@ -17,11 +24,28 @@
          *
          * @return none.
          */
-        public static function output($msg = '', $newLine = true, $exit = false) { 
+        public function output($msg = '', $newLine = true, $exit = false) { 
             echo (preg_match('/^-[^-]+/', $msg) ? 
                 ltrim($msg, '-') : 
-                self::$outputPrefix.$msg).($newLine ? PHP_EOL : ''); 
+                $this->outputPrefix.$msg).($newLine ? PHP_EOL : ''); 
             if ($exit) exit;
+        }
+
+        /*
+        * Same as output except this function resets the cursor to the start of the line.
+        * 
+         * @param string $msg The data you would like to post to the screen. If $msg starts with
+         *                    a single '-' then the prefix will be excluded.
+         * @param boolean $newLine Do you want a newline at the end or not?
+         * @param boolean $exit Do you want to exit after printing the message or not?
+         *
+         * @return none.
+         */
+        public function outputLine($msg = '') {
+            for ($cnt = 0; $cnt < $this->screen['width']; $cnt++)
+                echo ' ';
+            echo "\r";
+            $this->output($msg." \r", false);
         }
 
         /**
@@ -29,7 +53,7 @@
          *
          * @return string Whatever the user enters and then presses enter.
          */
-        public static function input() {
+        public function input() {
             $input = trim(fgets(STDIN));
             return $input;
         }
@@ -43,7 +67,7 @@
          *
          * @return string A valid input option.
          */
-        public static function loopInput($msg = '', $options = array()) {
+        public function loopInput($msg = '', $options = array()) {
             $prompt = '';
             if (empty($options)) { // No options provided
             $prompt = "$msg"; 
@@ -56,8 +80,8 @@
             $prompt .= ': ';
             // Loop until the user gives a valid answer or quits
             while (true) {
-                self::output($prompt, false);
-                $input = self::input();
+                $this->output($prompt, false);
+                $input = $this->input();
                 if (empty($options)) { // If options are empty any answer is valid.
                     if (!empty($input)) return $input;
                 } else { // Must be a valid answer
@@ -77,10 +101,21 @@
          *
          * @return string The last line from the cmd.
          */
-        public static function run($cmd) {
-            self::$lastCmdOutput = false;
-            self::$lastCmdStatus = false;
-            return exec("$cmd 2>&1", self::$lastCmdOutput, self::$lastCmdStatus);
+        public function run($cmd) {
+            $this->lastCmdOutput = false;
+            $this->lastCmdStatus = false;
+            return exec("$cmd 2>&1", $this->lastCmdOutput, $this->lastCmdStatus);
+        }
+
+        /**
+         * Outputs a message with a success tag.
+         *
+         * @param string $msg A string describing why something was successful.
+         *
+         * @return none.
+         */
+        public function success($msg) { 
+            $this->output("[SUCCESS] $msg");
         }
 
         /**
@@ -90,8 +125,8 @@
          *
          * @return none.
          */
-        public static function fail($msg) { 
-            self::output("[ERROR] $msg", true, true);
+        public function fail($msg) { 
+            $this->output("[ERROR] $msg", true, true);
         }
 
         /**
@@ -101,8 +136,20 @@
          *
          * @return none.
          */
-        public static function info($msg) { 
-            self::output("[INFO] $msg", true, true);
+        public function info($msg, $newLine = true) { 
+            $this->output("[INFO] $msg", $newLine);
+        }
+
+        /**
+         * Outputs a message with an warning tag.
+         *
+         * @param string $msg A string detailing that something occurred and 
+         * may have been dangerous.
+         *
+         * @return none.
+         */
+        public function warning($msg, $newLine = true) { 
+            $this->output("[WARNING] $msg", $newLine);
         }
 
     }
