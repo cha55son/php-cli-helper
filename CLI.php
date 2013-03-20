@@ -36,8 +36,6 @@
         * 
          * @param string $msg The data you would like to post to the screen. If $msg starts with
          *                    a single '-' then the prefix will be excluded.
-         * @param boolean $newLine Do you want a newline at the end or not?
-         * @param boolean $exit Do you want to exit after printing the message or not?
          *
          * @return none.
          */
