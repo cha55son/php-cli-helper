@@ -1,0 +1,39 @@
+#!/usr/bin/php
+<?php
+    require dirname(__FILE__).'/../CLI.php';
+
+    $testing = 'TESTING A COLOR!';
+    CLI::out("      BLACK: ".CLI::color($testing, CLI_BLACK, CLI_BG_WHITE));
+    CLI::out("       BLUE: ".CLI::color($testing, CLI_BLUE));
+    CLI::out("      BROWN: ".CLI::color($testing, CLI_BROWN));
+    CLI::out("       CYAN: ".CLI::color($testing, CLI_CYAN));
+    CLI::out("       GRAY: ".CLI::color($testing, CLI_GRAY));
+    CLI::out("      GREEN: ".CLI::color($testing, CLI_GREEN));
+    CLI::out("     PURPLE: ".CLI::color($testing, CLI_PURPLE));
+    CLI::out("        RED: ".CLI::color($testing, CLI_RED));
+    CLI::out("      WHITE: ".CLI::color($testing, CLI_WHITE));
+    CLI::out("     YELLOW: ".CLI::color($testing, CLI_YELLOW));
+    CLI::out("  DARK_BLUE: ".CLI::color($testing, CLI_DARK_BLUE));
+    CLI::out("  DARK_CYAN: ".CLI::color($testing, CLI_DARK_CYAN));
+    CLI::out("  DARK_GRAY: ".CLI::color($testing, CLI_DARK_GRAY));
+    CLI::out(" DARK_GREEN: ".CLI::color($testing, CLI_DARK_GREEN));
+    CLI::out("DARK_PURPLE: ".CLI::color($testing, CLI_DARK_PURPLE));
+    CLI::out("   DARK_RED: ".CLI::color($testing, CLI_DARK_RED));
+    CLI::out("  UND_BLACK: ".CLI::color($testing, CLI_UND_BLACK, CLI_BG_WHITE));
+    CLI::out("   UND_BLUE: ".CLI::color($testing, CLI_UND_BLUE));
+    CLI::out("   UND_CYAN: ".CLI::color($testing, CLI_UND_CYAN));
+    CLI::out("  UND_GREEN: ".CLI::color($testing, CLI_UND_GREEN));
+    CLI::out(" UND_PURPLE: ".CLI::color($testing, CLI_UND_PURPLE));
+    CLI::out("    UND_RED: ".CLI::color($testing, CLI_UND_RED));
+    CLI::out("  UND_WHITE: ".CLI::color($testing, CLI_UND_WHITE));
+    CLI::out(" UND_YELLOW: ".CLI::color($testing, CLI_UND_YELLOW));
+    CLI::out("   BG_BLACK: ".CLI::color($testing, CLI_WHITE, CLI_BG_BLACK));
+    CLI::out("    BG_BLUE: ".CLI::color($testing, CLI_WHITE, CLI_BG_BLUE));
+    CLI::out("    BG_CYAN: ".CLI::color($testing, CLI_WHITE, CLI_BG_CYAN));
+    CLI::out("    BG_GRAY: ".CLI::color($testing, CLI_WHITE, CLI_BG_GRAY));
+    CLI::out("   BG_GREEN: ".CLI::color($testing, CLI_WHITE, CLI_BG_GREEN));
+    CLI::out(" BG_MAGENTA: ".CLI::color($testing, CLI_WHITE, CLI_BG_MAGENTA));
+    CLI::out("     BG_RED: ".CLI::color($testing, CLI_WHITE, CLI_BG_RED));
+    CLI::out("   BG_WHITE: ".CLI::color($testing, CLI_BLACK, CLI_BG_WHITE));
+    CLI::out("  BG_YELLOW: ".CLI::color($testing, CLI_WHITE, CLI_BG_YELLOW));
+?>

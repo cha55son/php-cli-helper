@@ -1,18 +1,18 @@
 #!/usr/bin/php
 <?php
-    require dirname(dirname(__FILE__)).'/CLI.php';
+    require dirname(__FILE__).'/../CLI.php';
 
-    CLI::output();
-    $answer = CLI::loopInput('Welcome how are you?', array('good', 'bad'));
+    CLI::out();
+    $answer = CLI::loopIn('Welcome how are you?', array('good', 'bad'));
     if ($answer == 'bad')
-        CLI::output('O well, I\'ll let you rest then.', true, true);
+        CLI::out('O well, I\'ll let you rest then.', true, true);
 
-    CLI::output("Great! Lets move on then.");
-    $answer = CLI::loopInput("What's your favorite computer?", array('Mac', 'Windows'));
+    CLI::out("Great! Lets move on then.");
+    $answer = CLI::loopIn("What's your favorite OS?", array('Mac', 'Windows'));
     if ($answer == 'Windows')
-        CLI::output("O, i'm not feeling to good, we'll have to stop.", true, true);
+        CLI::out("O, i'm not feeling to good, we'll have to stop.", true, true);
 
-    CLI::output("Macs are pretty cool.");
+    CLI::out("Macs are pretty cool.");
 
-    CLI::output("Well its bedtime i'll see you around.");
+    CLI::out("Well its bedtime i'll see you around.");
 ?>

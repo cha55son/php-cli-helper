@@ -1,49 +1,57 @@
 <?php
+    // Pull in color codes
+    require dirname(__FILE__).'/colors.php';
+
     class CLI {
-        public $outputPrefix = '    ';
+        public static $outputPrefix = '    ';
         // Variables to hold the output and status
         // of the last ran command.
-        public $lastCmdStatus = false;
-        public $lastCmdOutput = false;
+        public static $lastCmdStatus = false;
+        public static $lastCmdOutput = false;
+        // Scren dimensions
+        public static $screen = array();
 
-        private $screen = array();
-
-        public function __construct() {
-            $this->screen['width'] = exec('tput cols');
-            $this->screen['height'] = exec('tput lines');
+        public static function getScreenSize() {
+            self::$screen['width'] = exec('tput cols');
+            self::$screen['height'] = exec('tput lines');
         }
 
         /*
-         * Outputs data to the cmdline. The output will be tabbed to 
-         * differientiate from the prompt/etc.
+         * Outputs data to the cmdline. The output will have a prefix to 
+         * differentiate from the prompt/etc.
          * 
-         * @param string $msg The data you would like to post to the screen. If $msg starts with
-         *                    a single '-' then the prefix will be excluded.
-         * @param boolean $newLine Do you want a newline at the end or not?
-         * @param boolean $exit Do you want to exit after printing the message or not?
+         * @param string  $msg      The data you would like to post to the screen. 
+         *                          If $msg starts with a single '-' then the prefix 
+         *                          will be excluded.
+         * @param boolean $newLine  Do you want a newline at the end or not?
+         * @param boolean $exit     Do you want to exit after printing the message or not?
          *
          * @return none.
          */
-        public function output($msg = '', $newLine = true, $exit = false) { 
-            echo (preg_match('/^-[^-]+/', $msg) ? 
-                ltrim($msg, '-') : 
-                $this->outputPrefix.$msg).($newLine ? PHP_EOL : ''); 
+        public static function out($msg = '', $newLine = true, $exit = false) { 
+            echo (
+                preg_match('/^-[^-]+/', $msg) ? 
+                    ltrim($msg, '-') : 
+                    self::$outputPrefix.$msg
+                ).($newLine ? PHP_EOL : ''); 
             if ($exit) exit;
         }
 
-        /*
-        * Same as output except this function resets the cursor to the start of the line.
-        * 
+        /**
+         * Same as output except this function resets the cursor to the start of the line.
+         * 
          * @param string $msg The data you would like to post to the screen. If $msg starts with
          *                    a single '-' then the prefix will be excluded.
          *
          * @return none.
          */
-        public function outputLine($msg = '') {
-            for ($cnt = 0; $cnt < $this->screen['width']; $cnt++)
+        public static function outLine($msg = '') {
+            // Check for resizing
+            self::getScreenSize();
+            for ($cnt = 0; $cnt < self::$screen['width']; $cnt++)
                 echo ' ';
             echo "\r";
-            $this->output($msg." \r", false);
+            self::out($msg." \r", false);
         }
 
         /**
@@ -51,7 +59,7 @@
          *
          * @return string Whatever the user enters and then presses enter.
          */
-        public function input() {
+        public static function in() {
             $input = trim(fgets(STDIN));
             return $input;
         }
@@ -60,12 +68,13 @@
          * An extension of the input function, loopInput will keep looping until
          * the user either enters a proper supplied input, if options is set, or 'q' to quit.
          *
-         * @param string $msg The prompt to show the user for input.
-         * @param array $options An array of strings representing valid input. If empty any input is valid.
+         * @param string    $msg        The prompt to show the user for input.
+         * @param array     $options    An array of strings representing valid input. 
+         *                              If empty, any input is valid.
          *
          * @return string A valid input option.
          */
-        public function loopInput($msg = '', $options = array()) {
+        public static function loopIn($msg = '', $options = array()) {
             $prompt = '';
             if (empty($options)) { // No options provided
             $prompt = "$msg"; 
@@ -78,8 +87,8 @@
             $prompt .= ': ';
             // Loop until the user gives a valid answer or quits
             while (true) {
-                $this->output($prompt, false);
-                $input = $this->input();
+                self::out($prompt, false);
+                $input = self::in();
                 if (empty($options)) { // If options are empty any answer is valid.
                     if (!empty($input)) return $input;
                 } else { // Must be a valid answer
@@ -99,56 +108,76 @@
          *
          * @return string The last line from the cmd.
          */
-        public function run($cmd) {
-            $this->lastCmdOutput = false;
-            $this->lastCmdStatus = false;
-            return exec("$cmd 2>&1", $this->lastCmdOutput, $this->lastCmdStatus);
+        public static function run($cmd) {
+            self::$lastCmdOutput = false;
+            self::$lastCmdStatus = false;
+            return exec("$cmd 2>&1", self::$lastCmdOutput, self::$lastCmdStatus);
         }
 
         /**
          * Outputs a message with a success tag.
          *
-         * @param string $msg A string describing why something was successful.
+         * @param string    $msg        A string describing why something was successful.
+         * @param boolean   $newLine    Adds a newline to the end of the line.
+         * @param boolean   $exit       Exit the program after output.
          *
          * @return none.
          */
-        public function success($msg) { 
-            $this->output("[SUCCESS] $msg");
+        public static function success($msg, $newLine = true, $exit = false) { 
+            self::out(self::color("[SUCCESS]", CLI_GREEN)." $msg", $newLine, $exit);
         }
 
         /**
-         * Outputs a message with an error tag, then exits.
+         * Outputs a message with an error tag.
          *
-         * @param string $msg A string describing why an error occurred.
+         * @param string    $msg        A string describing why an error occurred.
+         * @param boolean   $newLine    Adds a newline to the end of the line.
+         * @param boolean   $exit       Exit the program after output.
          *
          * @return none.
          */
-        public function fail($msg) { 
-            $this->output("[ERROR] $msg", true, true);
+        public static function fail($msg, $newLine = true, $exit = false) { 
+            self::out(self::color("[ERROR]", CLI_RED)." $msg", $newLine, $exit);
         }
 
         /**
          * Outputs a message with an info tag.
          *
-         * @param string $msg A string detailing that something occurred.
+         * @param string    $msg        A string detailing that something occurred.
+         * @param boolean   $newLine    Adds a newline to the end of the line.
+         * @param boolean   $exit       Exit the program after output.
          *
          * @return none.
          */
-        public function info($msg, $newLine = true) { 
-            $this->output("[INFO] $msg", $newLine);
+        public static function info($msg, $newLine = true, $exit = false) { 
+            self::out(self::color("[INFO]", CLI_DARK_GRAY)." $msg", $newLine, $exit);
         }
 
         /**
-         * Outputs a message with an warning tag.
+         * Outputs a message with a warning tag.
          *
-         * @param string $msg A string detailing that something occurred and 
-         * may have been dangerous.
+         * @param string    $msg        A string detailing that something occurred and 
+         *                              may have been dangerous.
+         * @param boolean   $newLine    Adds a newline to the end of the line.
+         * @param boolean   $exit       Exit the program after output.
          *
          * @return none.
          */
-        public function warning($msg, $newLine = true) { 
-            $this->output("[WARNING] $msg", $newLine);
+        public static function warning($msg, $newLine = true, $exit = false) { 
+            self::out(self::color("[WARNING]", CLI_YELLOW)." $msg", $newLine, $exit);
         }
 
+        /**
+         * Colors a string.
+         *
+         * @param string    $msg    The string to be colored.
+         * @param constant  $fg     A foreground color from the color constants.
+         * @param constant  $bg     A background color from the color constants.
+         *
+         * @return colored string.
+         */
+        public static function color($msg, $fg = PHP_CLI_WHITE, $bg = '') {
+           return $fg.$bg.$msg.CLI_COLOR_END; 
+        }
     }
 ?>

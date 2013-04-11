@@ -1,0 +1,9 @@
+#!/usr/bin/php
+<?php
+    require dirname(__FILE__).'/../CLI.php';
+
+    CLI::info('Testing something...');
+    CLI::warning('Uh oh. Be cautious.');
+    CLI::success('Awesome it worked!');
+    CLI::fail('O no. That didnt work.');
+?>
