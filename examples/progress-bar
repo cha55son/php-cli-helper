@@ -1,0 +1,17 @@
+#!/usr/bin/php
+<?php
+   require dirname(__FILE__).'/../CLI.php'; 
+
+   CLI::out('Downloading a really large file... (Not really)');
+   $start = time();
+   $total = 50000;
+   for ($i = 0; $i < $total; $i++) {
+        $elapsed = max(time() - $start, 0);
+        $mins = sprintf('%02d', intval($elapsed / 60));
+        $secs = sprintf('%02d', $elapsed % 60);
+        $percent = $i/$total;
+        CLI::outLine(intval($percent * 100).'% '.CLI::progress($percent)." $mins:$secs");
+   }
+   CLI::out();
+   CLI::success('Finished downloading.');
+?>

@@ -1,6 +1,12 @@
 <?php
+    /**
+     * A simple class that makes php cli scripting really easy. 
+     *
+     * @author Chason Choate <cha55son@gmail.com>
+     */
+    
     // Pull in color codes
-    require dirname(__FILE__).'/colors.php';
+    require dirname(__FILE__).'/resources/colors.php';
 
     class CLI {
         public static $outputPrefix = '    ';
@@ -11,9 +17,37 @@
         // Scren dimensions
         public static $screen = array();
 
+
+        /**
+         * Builds a simple progress bar.
+         * 
+         * @param float $percent A fraction between 0 and 1.
+         * @param int   $width   The full size of the progress bar including the sides.
+         *
+         * @return string The progress bar.
+         */
+        public static function progress($percent = 0, $width = 40) {
+            if ($percent > 1 || $percent < 0) 
+                $percent = 0;
+            $str = self::color('[', CLI_WHITE);
+            $complete = ceil(floatval($percent) * ($width - 2));
+            for ($i = 0; $i < $width - 2; $i++)
+                if ($i < $complete)
+                    $str .= self::color('=', CLI_GREEN);
+                else if ($i == $complete)
+                    $str .= CLI::color('>', CLI_YELLOW);
+                else
+                    $str .= '-';
+            return $str.self::color(']', CLI_WHITE);
+        }
+
+        /**
+         * Retrieves and caches the user's screen size.
+         */
         public static function getScreenSize() {
             self::$screen['width'] = exec('tput cols');
             self::$screen['height'] = exec('tput lines');
+            return self::$screen;
         }
 
         /*
