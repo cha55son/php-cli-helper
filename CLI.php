@@ -5,7 +5,7 @@
      * @author Chason Choate <cha55son@gmail.com>
      */
     
-    // Pull in color codes
+    // Pull in color constants
     require dirname(__FILE__).'/resources/colors.php';
 
     class CLI {
@@ -116,7 +116,7 @@
                 $optionStr = '';
                 foreach ($options as $index => $opt) 
                     $optionStr .= $opt . (((count($options) - 1) == $index) ? '' : ',');
-                $prompt = (empty($msg) ? '' : "$msg ") . "[${optionStr},q] ";
+                $prompt = (empty($msg) ? '' : "$msg ") . self::color("[${optionStr},q] ", CLI_WHITE);
             }
             $prompt .= ': ';
             // Loop until the user gives a valid answer or quits
@@ -170,7 +170,7 @@
          *
          * @return none.
          */
-        public static function fail($msg, $newLine = true, $exit = false) { 
+        public static function error($msg, $newLine = true, $exit = false) { 
             self::out(self::color("[ERROR]", CLI_RED)." $msg", $newLine, $exit);
         }
 
@@ -200,6 +200,32 @@
         public static function warning($msg, $newLine = true, $exit = false) { 
             self::out(self::color("[WARNING]", CLI_YELLOW)." $msg", $newLine, $exit);
         }
+    
+        /**
+         * Outputs a message with a custom tag.
+         *
+         * @param string    $type       Any type of identifier such as ALERT,TESTING,etc.
+         * @param constant  $color      Any color constant from resources/colors.php. 
+         * @param string    $msg        A string detailing that something occurred.
+         * @param boolean   $newLine    Adds a newline to the end of the line.
+         * @param boolean   $exit       Exit the program after output.
+         *
+         * @return none.
+         */
+        public static function custom($type = 'CUSTOM', $color = CLI_YELLOW, $msg = '', $newLine = true, $exit = false) {
+            self::out(self::color("[$type]", $color)." $msg", $newLine, $exit);
+        }
+
+        /**
+         * Outputs an error message and then exits.
+         * Uses the error function above.
+         *
+         * @return none.
+         */
+        public function fail($msg = '', $newLine = true) {
+            self::error($msg, $newLine, true);
+        }
+
 
         /**
          * Colors a string.
@@ -210,7 +236,7 @@
          *
          * @return colored string.
          */
-        public static function color($msg, $fg = PHP_CLI_WHITE, $bg = '') {
+        public static function color($msg, $fg = CLI_WHITE, $bg = '') {
            return $fg.$bg.$msg.CLI_COLOR_END; 
         }
     }
