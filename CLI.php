@@ -93,7 +93,9 @@
          *
          * @return string Whatever the user enters and then presses enter.
          */
-        public static function in() {
+        public static function in($msg = '') {
+            if (!empty($msg))
+                self::out($msg . ' : ', false);
             $input = trim(fgets(STDIN));
             return $input;
         }
