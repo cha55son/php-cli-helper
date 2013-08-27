@@ -1,4 +1,4 @@
-php-shell-functions
+php-cli-helper
 ===================
 
 A simple class to make php shell scripts easier to write.
