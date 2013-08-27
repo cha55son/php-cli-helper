@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>php-cli-helper by cha55son</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/cha55son/php-cli-helper">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/cha55son/php-cli-helper/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/cha55son/php-cli-helper/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>php-cli-helper</h1>
+          <p>A simple class to make php shell scripts easier to write.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/cha55son">cha55son</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="php-cli-helper" class="anchor" href="#php-cli-helper"><span class="octicon octicon-link"></span></a>php-cli-helper</h1>
+
+<p>A simple class to make php shell scripts easier to write.</p>
+
+<p>All you need to do is require CLI.php and you are good to go. 
+Below are the basic functions</p>
+
+<h6>
+<a name="output" class="anchor" href="#output"><span class="octicon octicon-link"></span></a>Output</h6>
+
+<hr><div class="highlight"><pre>  <span class="nx">CLI</span><span class="o">::</span><span class="na">out</span><span class="p">(</span><span class="s2">"This text is indented"</span><span class="p">);</span>
+  <span class="c1">// Adding false as the second parameter will remove the newline</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">out</span><span class="p">(</span><span class="s1">'Working...'</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+  <span class="c1">// Adding a dash at the beginning will remove the indent</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">out</span><span class="p">(</span><span class="s1">'-Done.'</span><span class="p">);</span>
+  <span class="c1">// Here are some status functions, these functions color the </span>
+  <span class="c1">// tag to indicate the status. (Although I cant show that here.)</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">info</span><span class="p">(</span><span class="s1">'Testing something...'</span><span class="p">);</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">warning</span><span class="p">(</span><span class="s1">'Uh oh. Be cautious.'</span><span class="p">);</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">success</span><span class="p">(</span><span class="s1">'Awesome it worked!'</span><span class="p">);</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">error</span><span class="p">(</span><span class="s1">'O no. That didnt work.'</span><span class="p">);</span>
+  <span class="c1">// Fail will exit the script for you.</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">fail</span><span class="p">(</span><span class="s1">'Something really bad happened exit the script'</span><span class="p">);</span>
+  <span class="c1">// Create your own custom status with the following</span>
+  <span class="c1">// Check the resources/colors.php for specific color constants.</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">custom</span><span class="p">(</span><span class="s1">'ALERT'</span><span class="p">,</span> <span class="nx">CLI_UND_WHITE</span><span class="p">,</span> <span class="s1">'Check out my white underlined text'</span><span class="p">);</span>
+  <span class="c1">// Want to use color text in your output? No problem just use the following.</span>
+  <span class="nv">$coloredText</span> <span class="o">=</span> <span class="nx">CLI</span><span class="o">::</span><span class="na">color</span><span class="p">(</span><span class="s1">'Chason Choate'</span><span class="p">,</span> <span class="nx">CLI_DARK_BLUE</span><span class="p">);</span>
+  <span class="nx">CLI</span><span class="o">::</span><span class="na">out</span><span class="p">(</span><span class="s2">"Hi my name is </span><span class="si">$coloredText</span><span class="s2">."</span><span class="p">);</span>
+
+
+  <span class="c1">// Output</span>
+  <span class="k">This</span> <span class="nx">text</span> <span class="nx">is</span> <span class="nx">indented</span>
+  <span class="nx">Working</span><span class="o">...</span><span class="nx">Done</span><span class="o">.</span>
+  <span class="p">[</span><span class="nx">INFO</span><span class="p">]</span> <span class="nx">Testing</span> <span class="nx">something</span><span class="o">...</span>
+  <span class="p">[</span><span class="nx">WARNING</span><span class="p">]</span> <span class="nx">Uh</span> <span class="nx">oh</span><span class="o">.</span> <span class="nx">Be</span> <span class="nx">cautious</span><span class="o">.</span>
+  <span class="p">[</span><span class="nx">SUCCESS</span><span class="p">]</span> <span class="nx">Awesome</span> <span class="nx">it</span> <span class="nx">worked</span><span class="o">!</span>
+  <span class="p">[</span><span class="nx">ERROR</span><span class="p">]</span> <span class="nx">O</span> <span class="nx">no</span><span class="o">.</span> <span class="nx">That</span> <span class="nx">didnt</span> <span class="nx">work</span><span class="o">.</span>
+  <span class="p">[</span><span class="nx">ERROR</span><span class="p">]</span> <span class="nx">Something</span> <span class="nx">really</span> <span class="nx">bad</span> <span class="nx">happened</span> <span class="k">exit</span> <span class="nx">the</span> <span class="nx">script</span>
+  <span class="p">[</span><span class="nx">ALERT</span><span class="p">]</span> <span class="nx">Check</span> <span class="nx">out</span> <span class="nx">my</span> <span class="nx">white</span> <span class="nx">underlined</span> <span class="nx">text</span>
+  <span class="nx">Hi</span> <span class="nx">my</span> <span class="nx">name</span> <span class="nx">is</span> <span class="nx">Chason</span> <span class="nx">Choate</span><span class="o">.</span>
+</pre></div>
+
+<h6>
+<a name="input" class="anchor" href="#input"><span class="octicon octicon-link"></span></a>Input</h6>
+
+<hr><p>There are two functions available for getting user input.</p>
+
+<div class="highlight"><pre>  <span class="nv">$answer</span> <span class="o">=</span> <span class="nx">CLI</span><span class="o">::</span><span class="na">in</span><span class="p">(</span><span class="s2">"What's your favorite beer?"</span><span class="p">);</span>
+  <span class="c1">// With loopIn you can specify responses the user must enter or quit</span>
+  <span class="c1">// If the user enters an invalid input it will show the prompt again.</span>
+  <span class="nv">$answer</span> <span class="o">=</span> <span class="nx">CLI</span><span class="o">::</span><span class="na">loopIn</span><span class="p">(</span><span class="s2">"What's your favorite OS?"</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s2">"Mac"</span><span class="p">,</span> <span class="s2">"Windows"</span><span class="p">));</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$answer</span> <span class="o">==</span> <span class="s1">'Mac'</span><span class="p">)</span>
+    <span class="nx">CLI</span><span class="o">::</span><span class="na">out</span><span class="p">(</span><span class="s2">"Macs are pretty cool."</span><span class="p">);</span>
+  <span class="c1">// Output</span>
+  <span class="nx">What</span><span class="s1">'s your favorite beer? : &lt;user types here and hits enter&gt;</span>
+<span class="s1">  What'</span><span class="nx">s</span> <span class="nx">your</span> <span class="nx">favorite</span> <span class="nx">OS</span><span class="o">?</span> <span class="p">[</span><span class="nx">Mac</span><span class="p">,</span><span class="nx">Windows</span><span class="p">,</span><span class="nx">q</span><span class="p">]</span> <span class="o">:</span> <span class="nx">Linux</span>
+  <span class="nx">What</span><span class="err">'</span><span class="nx">s</span> <span class="nx">your</span> <span class="nx">favorite</span> <span class="nx">OS</span><span class="o">?</span> <span class="p">[</span><span class="nx">Mac</span><span class="p">,</span><span class="nx">Windows</span><span class="p">,</span><span class="nx">q</span><span class="p">]</span> <span class="o">:</span> <span class="nx">Mac</span>
+  <span class="nx">Macs</span> <span class="nx">are</span> <span class="nx">pretty</span> <span class="nx">cool</span><span class="o">.</span>
+</pre></div>
+
+<h6>
+<a name="running-commandsscripts" class="anchor" href="#running-commandsscripts"><span class="octicon octicon-link"></span></a>Running commands/scripts</h6>
+
+<hr><p>This is how you make stuff happen and catch any errors if they occur.</p>
+
+<div class="highlight"><pre>  <span class="nx">CLI</span><span class="o">::</span><span class="na">run</span><span class="p">(</span><span class="s2">"cp test-dir test-dir-2"</span><span class="p">);</span>
+  <span class="c1">// After the command completes there are two important pieces of info you need</span>
+  <span class="c1">// CLI::$lastCmdStatus =&gt; Int, Holds the exit status of the command.</span>
+  <span class="c1">// Exit status: 0 typically means the script finished successfully.</span>
+  <span class="c1">// CLI::$lastCmdOutput =&gt; Array, holds the output lines from the command.</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">CLI</span><span class="o">::</span><span class="nv">$lastCmdStatus</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="nx">CLI</span><span class="o">::</span><span class="na">fail</span><span class="p">(</span><span class="s2">"Could not copy the directory."</span><span class="p">);</span>
+</pre></div>
+
+<h6>
+<a name="advanced-stuff" class="anchor" href="#advanced-stuff"><span class="octicon octicon-link"></span></a>Advanced stuff</h6>
+
+<hr><p>Below are some examples of additional functions in the CLI class.</p>
+
+<div class="highlight"><pre>  <span class="c1">// The outLine function will output a string on the same line</span>
+  <span class="c1">// good for counting/percentages/etc.</span>
+  <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">CLI</span><span class="o">::</span><span class="na">outLine</span><span class="p">(</span><span class="nv">$i</span><span class="p">);</span>
+
+  <span class="c1">// Checkout the progress example script for how to use the progress function.</span>
+  <span class="nx">Downloading</span> <span class="nx">a</span> <span class="nx">really</span> <span class="nx">large</span> <span class="nb">file</span><span class="o">...</span>
+  <span class="mi">2</span><span class="o">%</span> <span class="p">[</span><span class="o">=&gt;------------------------------------</span><span class="p">]</span> <span class="mo">00</span><span class="o">:</span><span class="mi">10</span>
+</pre></div>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
