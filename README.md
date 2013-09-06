@@ -4,7 +4,15 @@ php-cli-helper
 A simple class to make php shell scripts easier to write.
 
 All you need to do is require CLI.php and you are good to go. 
-Below are the basic functions
+
+###### Logging
+-------------------------
+
+Before you get started you should consider enabling logging so you can see what is happening with your scripts.
+
+```php
+  CLI::setLogFile(dirname(__FILE__).'/tell-me-everything.log');
+```
 
 ###### Output
 -------------------------
