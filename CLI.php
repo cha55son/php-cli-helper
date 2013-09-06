@@ -31,7 +31,7 @@
                touch($filePath);
            self::$logFile = $filePath;
            // Add start block for each session
-           self::log(PHP_EOL.'+ '.date("F j, Y, g:i a").' ----------------------'.PHP_EOL);
+           self::log(PHP_EOL.'+ '.@date("F j, Y, g:i a").' ----------------------'.PHP_EOL);
         }
 
         /**
