@@ -16,7 +16,23 @@
         public static $lastCmdOutput = false;
         // Scren dimensions
         public static $screen = array();
+        // Log file
+        private static $logFile = '';
 
+        /*
+         * Sets the log file. Log all outputs (excluding outLine) to the given file.
+         *
+         * @param string $filePath A valid file path, if the file does not exist it will be created.
+         *
+         * @return none.
+         */
+        public static function setLogFile($filePath) {
+           if (!file_exists($filePath)) 
+               touch($filePath);
+           self::$logFile = $filePath;
+           // Add start block for each session
+           self::log(PHP_EOL.'+ '.date("F j, Y, g:i a").' ----------------------'.PHP_EOL);
+        }
 
         /**
          * Builds a simple progress bar.
@@ -63,11 +79,13 @@
          * @return none.
          */
         public static function out($msg = '', $newLine = true, $exit = false) { 
-            echo (
+            $output = (
                 preg_match('/^-[^-]+/', $msg) ? 
                     ltrim($msg, '-') : 
                     self::$outputPrefix.$msg
                 ).($newLine ? PHP_EOL : ''); 
+            echo $output;
+            self::log($output);
             if ($exit) exit;
         }
 
@@ -97,6 +115,7 @@
             if (!empty($msg))
                 self::out($msg . ' : ', false);
             $input = trim(fgets(STDIN));
+            self::log($input.PHP_EOL);
             return $input;
         }
 
@@ -240,6 +259,11 @@
          */
         public static function color($msg, $fg = CLI_WHITE, $bg = '') {
            return $fg.$bg.$msg.CLI_COLOR_END; 
+        }
+
+        private static function log($data) {
+            if (file_exists(self::$logFile) && is_writable(self::$logFile))
+                file_put_contents(self::$logFile, $data, FILE_APPEND);
         }
     }
 ?>

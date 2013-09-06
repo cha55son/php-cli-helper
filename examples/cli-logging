@@ -1,0 +1,16 @@
+#!/usr/bin/php
+<?
+    require dirname(dirname(__FILE__)).'/CLI.php';
+    CLI::setLogFile(dirname(__FILE__).'/cli-logging.log');
+
+    CLI::out("This text is indented");
+    CLI::out('Working...', false);
+    CLI::out('-Done.');
+    $coloredText = CLI::color('Chason Choate', CLI_DARK_BLUE);
+    CLI::out("Hi my name is $coloredText.");
+    CLI::custom('ALERT', CLI_UND_WHITE, 'Check out my white underlined text');
+    CLI::info('Testing something...');
+    CLI::warning('Uh oh. Be cautious.');
+    CLI::success('Awesome it worked!');
+    CLI::error('O no. That didnt work.');
+    CLI::fail('Something really bad happened exit the script');

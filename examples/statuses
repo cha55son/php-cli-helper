@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?php
     require dirname(__FILE__).'/../CLI.php';
+    CLI::setLogFile(dirname(__FILE__).'/cli-logging.log');
 
     CLI::info('Testing something...');
     CLI::warning('Uh oh. Be cautious.');

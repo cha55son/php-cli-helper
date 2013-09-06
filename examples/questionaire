@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?php
     require dirname(__FILE__).'/../CLI.php';
+    CLI::setLogFile(dirname(__FILE__).'/cli-logging.log');
 
     CLI::out();
     $answer = CLI::loopIn('Welcome how are you?', array('good', 'bad'));

@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?php
     require dirname(__FILE__).'/../CLI.php';
+    CLI::setLogFile(dirname(__FILE__).'/cli-logging.log');
 
     $testing = 'TESTING A COLOR!';
     CLI::out("      BLACK: ".CLI::color($testing, CLI_BLACK, CLI_BG_WHITE));
